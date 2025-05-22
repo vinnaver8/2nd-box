@@ -1,174 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>3D Card Layout with Tailwind</title>
-  <!-- Tailwind CSS CDN -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Card UI with Golden Glow</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Optional: cursor for typewriter effect */
+    /* Base page bg */
+    body {
+      background-color: #0D0D0D;
+    }
+
+    /* We still need perspective for 3D */
+    .perspective { perspective: 1000px; }
+
+    /* Custom fold-down */
+    .fold-down {
+      transform: rotateX(90deg);
+    }
+
+    /* Golden card style */
+    .gold-card {
+      background-color: #0D0D0D;
+      border: 2px solid transparent;
+      border-radius: 1rem;
+      box-shadow:
+        0 0 10px rgba(255, 215, 0, 0.6),
+        inset 0 0 5px rgba(255, 215, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Hover / touch effect on center card */
+    .gold-card:hover,
+    .gold-card.active {
+      transform: scale(1.05) rotateX(5deg) rotateY(5deg);
+      box-shadow:
+        0 0 20px rgba(255, 215, 0, 0.8),
+        inset 0 0 10px rgba(255, 215, 0, 0.6);
+    }
+
+    /* Typewriter caret */
     .typing-text::after {
       content: '|';
-      opacity: 0.5;
-      animation: blink-caret 1s steps(1) infinite;
+      animation: blink 1s steps(1) infinite;
+      margin-left: 2px;
+      opacity: 0.7;
     }
-    @keyframes blink-caret {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 0.5; }
+    @keyframes blink {
+      0%,100% { opacity: 0; }
+      50%     { opacity: 0.7; }
     }
   </style>
 </head>
-<body class="bg-gray-900 flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen">
 
   <div class="flex items-start space-x-8 px-4">
-    <!-- Left placeholder panel (hidden on small screens) -->
-    <div class="hidden md:block">
-      <!-- Perspective container for 3D effect -->
-      <div class="perspective-[800px]">
-        <div id="left-panel" class="transform -rotate-y-[12deg] origin-center w-60 h-80">
-          <div class="bg-gray-800 p-4 rounded-lg animate-pulse opacity-50 flex flex-col justify-between h-full">
-            <div class="space-y-2">
-              <div class="h-4 bg-gray-500 rounded w-3/4"></div>
-              <div class="h-4 bg-gray-500 rounded"></div>
-              <div class="h-4 bg-gray-500 rounded w-1/2"></div>
-            </div>
-            <div class="flex items-center space-x-2">
-              <div class="h-6 w-6 bg-gray-500 rounded-full"></div>
-              <div class="h-4 bg-gray-500 rounded w-1/3"></div>
-            </div>
-          </div>
-        </div>
+    <!-- Left placeholder -->
+    <div class="hidden md:block perspective">
+      <div class="transform -rotate-y-12 origin-center w-60 h-80">
+        <div class="bg-gray-800 opacity-50 animate-pulse rounded-xl w-full h-full"></div>
       </div>
     </div>
 
-    <!-- Center card container -->
-    <div id="center" class="relative perspective-[800px] w-72 h-96">
-      <!-- Card 1 -->
-      <div class="card absolute inset-0 bg-white text-gray-900 p-6 rounded-xl shadow-2xl transform transition-transform duration-700 origin-top backface-hidden flex flex-col">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Resume</h2>
-        <div class="flex-grow flex items-center">
-          <p class="typing-text text-gray-600 text-center text-lg w-full"></p>
-        </div>
-      </div>
-      <!-- Card 2 (hidden initially) -->
-      <div class="card absolute inset-0 hidden bg-white text-gray-900 p-6 rounded-xl shadow-2xl transform transition-transform duration-700 origin-top backface-hidden flex flex-col">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Website</h2>
-        <div class="flex-grow flex items-center">
-          <p class="typing-text text-gray-600 text-center text-lg w-full"></p>
-        </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="card absolute inset-0 hidden bg-white text-gray-900 p-6 rounded-xl shadow-2xl transform transition-transform duration-700 origin-top backface-hidden flex flex-col">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Image Generator</h2>
-        <div class="flex-grow flex items-center">
-          <p class="typing-text text-gray-600 text-center text-lg w-full"></p>
-        </div>
-      </div>
-      <!-- Card 4 -->
-      <div class="card absolute inset-0 hidden bg-white text-gray-900 p-6 rounded-xl shadow-2xl transform transition-transform duration-700 origin-top backface-hidden flex flex-col">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Map Generator</h2>
-        <div class="flex-grow flex items-center">
-          <p class="typing-text text-gray-600 text-center text-lg w-full"></p>
-        </div>
-      </div>
-      <!-- Card 5 -->
-      <div class="card absolute inset-0 hidden bg-white text-gray-900 p-6 rounded-xl shadow-2xl transform transition-transform duration-700 origin-top backface-hidden flex flex-col">
-        <h2 class="text-2xl font-semibold mb-4 text-center">Invoice Creator</h2>
-        <div class="flex-grow flex items-center">
-          <p class="typing-text text-gray-600 text-center text-lg w-full"></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right placeholder panel (hidden on small screens) -->
-    <div class="hidden md:block">
-      <div class="perspective-[800px]">
-        <div id="right-panel" class="transform rotate-y-[12deg] origin-center w-60 h-80">
-          <div class="bg-gray-800 p-4 rounded-lg animate-pulse opacity-50 flex flex-col justify-between h-full">
-            <div class="space-y-2">
-              <div class="h-4 bg-gray-500 rounded w-3/4"></div>
-              <div class="h-8 bg-gray-600 rounded"></div>
-              <div class="h-4 bg-gray-500 rounded w-1/3"></div>
-            </div>
-            <div class="flex items-center space-x-2">
-              <div class="h-6 w-6 bg-gray-500 rounded-full"></div>
-              <div class="h-4 bg-gray-500 rounded w-2/5"></div>
-            </div>
+    <!-- Center column -->
+    <div id="center" class="relative perspective w-72 h-96">
+      <!-- Card template -->
+      <template id="card-template">
+        <div class="card absolute inset-0 gold-card transform origin-top backface-hidden flex flex-col p-6 text-gray-100">
+          <h2 class="text-xl font-semibold mb-3 text-center"></h2>
+          <div class="flex-grow flex items-center">
+            <p class="typing-text text-center flex-grow"></p>
           </div>
         </div>
+      </template>
+    </div>
+
+    <!-- Right placeholder -->
+    <div class="hidden md:block perspective">
+      <div class="transform rotate-y-12 origin-center w-60 h-80">
+        <div class="bg-gray-800 opacity-50 animate-pulse rounded-xl w-full h-full"></div>
       </div>
     </div>
   </div>
 
-  <!-- JavaScript for typewriter effect and card transitions -->
   <script>
-    // Messages for each card
-    const cardMessages = [
-      ["Generating your resume...", "Analyzing skills...", "Resume ready!"],
-      ["Selecting templates...", "Building website...", "Website deployed!"],
-      ["Processing images...", "Applying filters...", "Image complete!"],
-      ["Calculating routes...", "Optimizing directions...", "Map ready!"],
-      ["Compiling invoice...", "Finalizing totals...", "Invoice created!"]
+    // Card data
+    const data = [
+      { title: "Resume", messages: ["Generating resume...", "Analyzing skills...", "Done!"] },
+      { title: "Website", messages: ["Loading template...", "Populating pages...", "Live!"] },
+      { title: "Image Gen", messages: ["Applying filters...", "Rendering art...", "Complete!"] },
+      { title: "Map", messages: ["Fetching data...", "Drawing routes...", "Ready!"] },
+      { title: "Invoice", messages: ["Calculating totals...", "Formatting PDF...", "Done!"] },
     ];
-    const cards = Array.from(document.querySelectorAll('.card'));
-    let currentIndex = 0;
-    let isAnimating = false;
 
-    // Function to type out messages in a given card index
-    function typeCard(index) {
-      const messages = cardMessages[index];
-      const p = cards[index].querySelector('.typing-text');
-      let msgIndex = 0, charIndex = 0;
-      p.textContent = '';
-      function typeChar() {
-        const currentMsg = messages[msgIndex];
-        if (charIndex < currentMsg.length) {
-          p.textContent += currentMsg.charAt(charIndex);
-          charIndex++;
-          setTimeout(typeChar, 50);
+    const center = document.getElementById("center");
+    const template = document.getElementById("card-template");
+    let index = 0, animating = false;
+
+    // Create all cards up front
+    const cards = data.map(item => {
+      const clone = template.content.firstElementChild.cloneNode(true);
+      clone.querySelector("h2").textContent = item.title;
+      center.appendChild(clone);
+      return { el: clone, messages: item.messages };
+    });
+
+    // Typing effect
+    function typeMessages(cardObj, cb) {
+      const p = cardObj.el.querySelector("p");
+      p.textContent = "";
+      let mi = 0, ci = 0;
+      function step() {
+        const msg = cardObj.messages[mi];
+        if (ci < msg.length) {
+          p.textContent += msg.charAt(ci++);
+          setTimeout(step, 50);
+        } else if (++mi < cardObj.messages.length) {
+          ci = 0;
+          p.textContent = "";
+          setTimeout(step, 600);
         } else {
-          // Pause and then show next message
-          setTimeout(() => {
-            msgIndex++;
-            if (msgIndex < messages.length) {
-              p.textContent = '';
-              charIndex = 0;
-              typeChar();
-            }
-          }, 800);
+          cb && cb();
         }
       }
-      typeChar();
+      step();
     }
 
-    // Show the first card and start typing
-    cards[0].classList.remove('hidden');
-    typeCard(0);
+    // Show first card
+    cards.forEach((c, i) => {
+      c.el.classList.toggle("hidden", i !== 0);
+    });
+    typeMessages(cards[0]);
 
-    // Function to move to the next card on scroll/click
+    // Advance cards
     function nextCard() {
-      if (isAnimating) return;
-      if (currentIndex >= cards.length - 1) return;
-      isAnimating = true;
-
-      // Fold down current card
-      const currentCard = cards[currentIndex];
-      currentCard.classList.add('rotate-x-90');
-      // After animation, hide it and show next card
+      if (animating || index >= cards.length - 1) return;
+      animating = true;
+      const current = cards[index].el;
+      current.classList.add("fold-down");
       setTimeout(() => {
-        currentCard.classList.add('hidden');
-        currentIndex++;
-        const nextCardElem = cards[currentIndex];
-        nextCardElem.classList.remove('hidden');
-        // Start typing on the new card
-        typeCard(currentIndex);
-        isAnimating = false;
-      }, 700);
+        current.classList.add("hidden");
+        current.classList.remove("fold-down");
+        index++;
+        const next = cards[index].el;
+        next.classList.remove("hidden");
+        // add active styling on next
+        next.classList.add("active");
+        typeMessages(cards[index], () => {
+          next.classList.remove("active");
+          animating = false;
+        });
+      }, 600);
     }
 
-    // Listen for scroll or click to trigger card transition
-    window.addEventListener('wheel', nextCard);
-    window.addEventListener('click', nextCard);
+    window.addEventListener("wheel", nextCard);
+    window.addEventListener("click", nextCard);
   </script>
 </body>
 </html>
